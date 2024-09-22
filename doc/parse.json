@@ -1,0 +1,19 @@
+{
+  "SOAP-ENV:Envelope": {
+    "$": {
+      "xmlns:SOAP-ENV": "http://schemas.xmlsoap.org/soap/envelope/"
+    },
+    "SOAP-ENV:Header": "",
+    "SOAP-ENV:Body": {
+      "ns2:getJWTResponse": {
+        "$": {
+          "xmlns:ns2": "https://soa.digitalizeshop.id/ws/jwt"
+        },
+        "ns2:accessToken": "eyJraWQiOiJzc29zIiwiemlwIjoiTFo0IiwiYWxnIjoiUlM1MTIifQ.TFo0QmxvY2smfgAAAIEAAADtNDEB8BV7ImF1ZCI6WyJiMmIiXSwic3ViIjoiYWNjZXNzX3Rva2VuIiwcAPAmSWQiOiI2YmZmMWJiMS03ODhiLTExZWYtYjkxMi0wMDBjMjlmODk3ODkiLCJpc3MiOiJTT0EMAPQEYXQiOjE3MjY5OTM4NTAsImV4cBEAUDQ3NTB9TFo0QmxvY2sWAAAAAAAAAAAAAAAA.QKMiSnvBhoy1pC8C462Ihm1y1iI3ot681MvjWOQx5EDDN-zrXNUnPPmEpM6WhnlTlQRpwdX2-a_Iey3s2sRDVdn4egcRcccCJcM7HUu7u3bBYpEE_xNBu6ltCb_n6jkWKsP49KD9MnCX0n0EgU_eMNQSuEcVg-1-vcXxWEQjHa3hf9FmffXCs00D9HfMtT_yb4RuPln1-7ok2mOCy57M82G9XrvtOUT-qf7eWSjr07IHmLSG16IdQ8UZ9wPc4rZ60nKVjAhB18aMOtY0MwvTw9JwfDk-qt0WQ6Zm4ZhkrVleHH8Om2uq97ANIdeCKdLEfSh227No05sI2MtAME-cuA",
+        "ns2:expiresIn": "900"
+      }
+    }
+  }
+}
+
+$.SOAP-ENV:Envelope.SOAP-ENV:Body.ns2:getJWTResponse.ns2:accessToken

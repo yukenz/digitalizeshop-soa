@@ -1,0 +1,34 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://soa.digitalizeshop.id/ws/jwt" elementFormDefault="qualified">
+
+    <!-- B2B2P -->
+    <xs:element name="getJWTB2B2PRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+                <xs:element name="password" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- B2B -->
+    <xs:element name="getJWTB2BRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="backendId" type="xs:string"/>
+                <xs:element name="signature" type="xs:string"/>
+                <xs:element name="timestamp" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getJWTResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="accessToken" type="xs:string"/>
+                <xs:element name="expiresIn" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: digitalizeshop-soa
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        show_sql: true
+        format_sql: true
+  # Datasoruce 1
+  datasource-first:
+    url: jdbc:mysql://192.168.56.2:3306/digitalized_shop
+    username: yukenz
+    password: awan123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  # Datasoruce 2
+  datasource-second:
+    url: jdbc:mysql://192.168.56.2:3306/digitalized_shop
+    username: yukenz
+    password: awan123
+    driver-class-name: com.mysql.cj.jdbc.Driver
