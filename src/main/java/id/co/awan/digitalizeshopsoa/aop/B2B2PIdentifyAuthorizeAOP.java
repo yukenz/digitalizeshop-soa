@@ -14,7 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 
@@ -30,6 +33,11 @@ public class B2B2PIdentifyAuthorizeAOP {
     private final JWTService jwtService;
     private final BackendModelRepo backendModelRepo;
     private final SellerModelRepo sellerModelRepo;
+
+
+    @Qualifier("firstTransactionManager")
+    private final PlatformTransactionManager transactionManager;
+
 
     @Around("execution(* id.co.awan.digitalizeshopsoa.endpoint.security.JWTEndpoint.getJWTB2B2PRequest(..)) && args(messageContext,request)")
     public Object handlerAOP(
@@ -53,6 +61,19 @@ public class B2B2PIdentifyAuthorizeAOP {
         BackendModel backendModel = backendModelRepo.findById(b2bId)
                 .orElseThrow(() -> new UnauthorizedSoapException("Unauthorized B2B Credential"));
         messageContext.setProperty(B2B_SECRET, backendModel.getSecret());
+
+        TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+
+        Boolean isAuth = transactionTemplate.execute(status -> {
+            String username = request.getUsername();
+            String password = request.getPassword();
+            return sellerModelRepo.authSeller(username, password);
+        });
+
+        // Validate Seller Credential
+        if (Boolean.FALSE.equals(isAuth)) {
+            throw new UnauthorizedSoapException("Invalid Seller Credential");
+        }
 
         // Proceed Resoruce
         Object[] args = pjp.getArgs();

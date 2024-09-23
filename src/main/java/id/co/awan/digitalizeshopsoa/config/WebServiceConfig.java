@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebServiceConfig extends WsConfigurerAdapter {
 
+
     // Schema Section
     @Bean
     public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(ApplicationContext applicationContext) {
@@ -78,14 +79,12 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     }
 
 
-
     // Interceptor Section
-//    private final AuthorizationInterceptor authorizationInterceptor;
 
     @Override
     public void addInterceptors(List<EndpointInterceptor> interceptors) {
         super.addInterceptors(interceptors);
-//        interceptors.add(authorizationInterceptor);
+//        interceptors.add(new JWTEndpointInterceptor());
     }
 
 }

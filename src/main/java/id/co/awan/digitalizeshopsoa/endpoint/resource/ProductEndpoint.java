@@ -39,7 +39,7 @@ public class ProductEndpoint {
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = LOCAL_PART_CREATE)
     public JAXBElement<ProductEntity> createProductRequest(
-            @RequestPayload JAXBElement<ProductEntity> request
+            @RequestPayload JAXBElement< ProductEntity> request
     ) throws UnauthorizedSoapException {
 
         ProductEntity requestObj = request.getValue();

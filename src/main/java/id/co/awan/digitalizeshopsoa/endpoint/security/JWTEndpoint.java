@@ -7,7 +7,6 @@ import id.co.awan.digitalizeshopsoa.database.first.repo.SellerModelRepo;
 import id.co.awan.digitalizeshopsoa.exception.UnauthorizedSoapException;
 import id.co.awan.digitalizeshopsoa.service.JWTService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -59,7 +58,6 @@ public class JWTEndpoint {
     // JWT B2B2P
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = LOCAL_PART_B2B2P)
     @ResponsePayload
-    @Transactional(transactionManager = "firstTransactionManager")
     public GetJWTResponse getJWTB2B2PRequest(
             MessageContext messageContext,
             @RequestPayload GetJWTB2B2PRequest request
@@ -67,16 +65,6 @@ public class JWTEndpoint {
 
         // Inject in AOP
         String backendSecret = (String) messageContext.getProperty(B2B_SECRET);
-
-        // Destruct Request
-        String username = request.getUsername();
-        String password = request.getPassword();
-
-        // Validate Seller Credential
-        if (!sellerModelRepo.authSeller(username, password)) {
-            throw new UnauthorizedSoapException("Invalid Seller Credential");
-        }
-
 
         // Generate B2B2P Token
         String accessToken = jwtService.generateB2B2PToken(
