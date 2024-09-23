@@ -1,9 +1,7 @@
 package id.co.awan.digitalizeshopsoa;
 
-import id.co.awan.digitalizeshopsoa.database.first.domain.SellerFirst;
-import id.co.awan.digitalizeshopsoa.database.first.repo.SellerFirstRepo;
-import id.co.awan.digitalizeshopsoa.database.second.domain.SellerSecond;
-import id.co.awan.digitalizeshopsoa.database.second.repo.SellerSecondRepo;
+import id.co.awan.digitalizeshopsoa.database.first.model.SellerModel;
+import id.co.awan.digitalizeshopsoa.database.first.repo.SellerModelRepo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
@@ -19,7 +17,7 @@ import java.util.List;
 public class JPATest {
 
     @Autowired
-    private SellerFirstRepo sellerFirstRepo;
+    private SellerModelRepo sellerModelRepo;
 
     @Autowired
     @Qualifier("firstEntityManagerFactory")
@@ -36,7 +34,7 @@ public class JPATest {
     @Transactional("firstTransactionManager")
     public void first() {
 
-        List<SellerFirst> all = sellerFirstRepo.findAll();
+        List<SellerModel> all = sellerModelRepo.findAll();
 
 
 
@@ -51,7 +49,7 @@ public class JPATest {
         Object isValid1 = query.getOutputParameterValue("isValid");
         System.out.println(isValid1);
 
-        Boolean b = sellerFirstRepo.authSeller("yukenz", "awan123");
+        Boolean b = sellerModelRepo.authSeller("yukenz", "awan123");
         System.out.print(b);
 
 

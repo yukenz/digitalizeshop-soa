@@ -1,4 +1,4 @@
-package id.co.awan.digitalizeshopsoa.database.first.domain;
+package id.co.awan.digitalizeshopsoa.database.first.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.Data;
         @StoredProcedureParameter(mode = ParameterMode.IN, name = "passwordIn", type = String.class),
         @StoredProcedureParameter(mode = ParameterMode.OUT, name = "isValid", type = Boolean.class)
 })
-public class SellerFirst {
+public class SellerModel {
 
     @Id
     private String id;

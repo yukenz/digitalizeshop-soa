@@ -125,8 +125,7 @@
                 </executions>
                 <configuration>
                     <sources>
-                        <source>${project.basedir}/src/main/resources/xsd/countries.xsd</source>
-                        <source>${project.basedir}/src/main/resources/xsd/jwt.xsd</source>
+                        <source>${project.basedir}/src/main/resources/xsd/</source>
                     </sources>
                 </configuration>
             </plugin>

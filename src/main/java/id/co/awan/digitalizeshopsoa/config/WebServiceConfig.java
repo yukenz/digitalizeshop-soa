@@ -1,5 +1,6 @@
 package id.co.awan.digitalizeshopsoa.config;
 
+import id.co.awan.digitalizeshopsoa.endpoint.resource.ProductEndpoint;
 import id.co.awan.digitalizeshopsoa.endpoint.security.JWTEndpoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -51,6 +52,16 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         return wsdl11Definition;
     }
 
+    @Bean(name = "product")
+    public DefaultWsdl11Definition menuWsdl11Definition(XsdSchema productSchema) {
+        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
+        wsdl11Definition.setPortTypeName(ProductEndpoint.PORT);
+        wsdl11Definition.setLocationUri("/ws");
+        wsdl11Definition.setTargetNamespace(ProductEndpoint.NAMESPACE_URI);
+        wsdl11Definition.setSchema(productSchema);
+        return wsdl11Definition;
+    }
+
     @Bean
     public XsdSchema countriesSchema() {
         return new SimpleXsdSchema(new ClassPathResource("xsd/countries.xsd"));
@@ -59,6 +70,11 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     @Bean
     public XsdSchema jwtSchema() {
         return new SimpleXsdSchema(new ClassPathResource("xsd/jwt.xsd"));
+    }
+
+    @Bean
+    public XsdSchema productSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("xsd/product.xsd"));
     }
 
 

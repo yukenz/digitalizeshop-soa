@@ -1,10 +1,10 @@
 package id.co.awan.digitalizeshopsoa.database.first.repo;
 
-import id.co.awan.digitalizeshopsoa.database.first.domain.SellerFirst;
+import id.co.awan.digitalizeshopsoa.database.first.model.SellerModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 
-public interface SellerFirstRepo extends JpaRepository<SellerFirst, String> {
+public interface SellerModelRepo extends JpaRepository<SellerModel, String> {
 
     @Procedure("authSeller")
     Boolean authSeller(String usernameIn, String passwordIn);

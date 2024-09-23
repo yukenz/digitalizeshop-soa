@@ -1,7 +1,7 @@
 package id.co.awan.digitalizeshopsoa.aop;
 
-import id.co.awan.digitalizeshopsoa.database.first.domain.BackendEntity;
-import id.co.awan.digitalizeshopsoa.database.first.repo.BackendEntityRepo;
+import id.co.awan.digitalizeshopsoa.database.first.model.BackendModel;
+import id.co.awan.digitalizeshopsoa.database.first.repo.BackendModelRepo;
 import id.co.awan.digitalizeshopsoa.exception.UnauthorizedSoapException;
 import id.co.awan.digitalizeshopsoa.service.JWTService;
 import id.co.awan.digitalizeshopsoa.util.MessageContextUtil;
@@ -26,7 +26,7 @@ public class IdentifyAndAuthorizeAOP {
 
     private final JWTService jwtService;
 
-    private final BackendEntityRepo backendEntityRepo;
+    private final BackendModelRepo backendModelRepo;
 
     @Around("execution(* id.co.awan.digitalizeshopsoa.example.CountryEndpoint.*(..))")
     public Object handlerAOP(ProceedingJoinPoint pjp) throws Throwable {
@@ -53,8 +53,8 @@ public class IdentifyAndAuthorizeAOP {
                 try {
                     String accessToken_B2B2P = MessageContextUtil.getBearerToken("Partner-Authorization", messageContext);
 
-                    BackendEntity backendEntity = backendEntityRepo.findById(b2bId).orElseThrow(() -> new UnauthorizedSoapException("Unauthorized B2B Credential"));
-                    String backendSecret = backendEntity.getSecret();
+                    BackendModel backendModel = backendModelRepo.findById(b2bId).orElseThrow(() -> new UnauthorizedSoapException("Unauthorized B2B Credential"));
+                    String backendSecret = backendModel.getSecret();
 
                     Jws<Claims> jwsB2B2P = jwtService.parseJWSWithSecrekKey(accessToken_B2B2P, backendSecret);
                     messageContext.setProperty(B2B2P_CLAIM_PRINCIPAL, jwsB2B2P.getPayload().get(B2B2P_CLAIM_PRINCIPAL));

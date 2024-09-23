@@ -1,4 +1,4 @@
-package id.co.awan.digitalizeshopsoa.database.first.domain;
+package id.co.awan.digitalizeshopsoa.database.first.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,7 +8,7 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "backend")
-public class BackendEntity {
+public class BackendModel {
 
     @Id
     private String id;

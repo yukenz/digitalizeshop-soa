@@ -1,8 +1,8 @@
 package id.co.awan.digitalizeshopsoa.aop;
 
 import https.soa_digitalizeshop_id.ws.jwt.GetJWTB2BRequest;
-import id.co.awan.digitalizeshopsoa.database.first.domain.BackendEntity;
-import id.co.awan.digitalizeshopsoa.database.first.repo.BackendEntityRepo;
+import id.co.awan.digitalizeshopsoa.database.first.model.BackendModel;
+import id.co.awan.digitalizeshopsoa.database.first.repo.BackendModelRepo;
 import id.co.awan.digitalizeshopsoa.exception.UnauthorizedSoapException;
 import id.co.awan.digitalizeshopsoa.util.CryptoUtil;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class B2BIdentifyAuthorizeAOP {
 
-    private final BackendEntityRepo backendEntityRepo;
+    private final BackendModelRepo backendModelRepo;
 
     @Around("execution(* id.co.awan.digitalizeshopsoa.endpoint.security.JWTEndpoint.getJWTB2BRequest(..)) && args(request)")
     public Object handlerAOP(ProceedingJoinPoint pjp, GetJWTB2BRequest request) throws Throwable {
@@ -29,11 +29,11 @@ public class B2BIdentifyAuthorizeAOP {
         String signature = request.getSignature();
 
         // Is b2bId valid from DB?
-        BackendEntity backendEntity = backendEntityRepo.findById(b2bid)
+        BackendModel backendModel = backendModelRepo.findById(b2bid)
                 .orElseThrow(() -> new UnauthorizedSoapException("Unauthorized Backend Credential"));
 
         // Is Signature Valid?
-        String trueSignature = CryptoUtil.hmacSha256EncBase64(b2bid + "|" + timestamp, backendEntity.getSecret());
+        String trueSignature = CryptoUtil.hmacSha256EncBase64(b2bid + "|" + timestamp, backendModel.getSecret());
         if (!trueSignature.equals(signature)) {
             throw new UnauthorizedSoapException("Invalid Signature");
         }

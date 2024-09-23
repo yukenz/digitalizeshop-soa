@@ -1,9 +1,9 @@
 package id.co.awan.digitalizeshopsoa.aop;
 
 import https.soa_digitalizeshop_id.ws.jwt.GetJWTB2B2PRequest;
-import id.co.awan.digitalizeshopsoa.database.first.domain.BackendEntity;
-import id.co.awan.digitalizeshopsoa.database.first.repo.BackendEntityRepo;
-import id.co.awan.digitalizeshopsoa.database.first.repo.SellerFirstRepo;
+import id.co.awan.digitalizeshopsoa.database.first.model.BackendModel;
+import id.co.awan.digitalizeshopsoa.database.first.repo.BackendModelRepo;
+import id.co.awan.digitalizeshopsoa.database.first.repo.SellerModelRepo;
 import id.co.awan.digitalizeshopsoa.exception.UnauthorizedSoapException;
 import id.co.awan.digitalizeshopsoa.service.JWTService;
 import id.co.awan.digitalizeshopsoa.util.MessageContextUtil;
@@ -15,7 +15,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 
@@ -29,8 +28,8 @@ import static id.co.awan.digitalizeshopsoa.config.VariableConfig.B2B_SECRET;
 public class B2B2PIdentifyAuthorizeAOP {
 
     private final JWTService jwtService;
-    private final BackendEntityRepo backendEntityRepo;
-    private final SellerFirstRepo sellerFirstRepo;
+    private final BackendModelRepo backendModelRepo;
+    private final SellerModelRepo sellerModelRepo;
 
     @Around("execution(* id.co.awan.digitalizeshopsoa.endpoint.security.JWTEndpoint.getJWTB2B2PRequest(..)) && args(messageContext,request)")
     public Object handlerAOP(
@@ -51,9 +50,9 @@ public class B2B2PIdentifyAuthorizeAOP {
         }
 
         // Is b2bId valid from DB?
-        BackendEntity backendEntity = backendEntityRepo.findById(b2bId)
+        BackendModel backendModel = backendModelRepo.findById(b2bId)
                 .orElseThrow(() -> new UnauthorizedSoapException("Unauthorized B2B Credential"));
-        messageContext.setProperty(B2B_SECRET, backendEntity.getSecret());
+        messageContext.setProperty(B2B_SECRET, backendModel.getSecret());
 
         // Proceed Resoruce
         Object[] args = pjp.getArgs();

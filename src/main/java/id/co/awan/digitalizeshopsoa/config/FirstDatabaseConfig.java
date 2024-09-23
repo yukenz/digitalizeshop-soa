@@ -27,7 +27,7 @@ import javax.sql.DataSource;
 
 public class FirstDatabaseConfig {
 
-    private static final String DOMAIN_PATH = "id.co.awan.digitalizeshopsoa.database.first.domain";
+    private static final String MODEL_PATH = "id.co.awan.digitalizeshopsoa.database.first.model";
 
     @Primary
     @Bean
@@ -47,7 +47,7 @@ public class FirstDatabaseConfig {
     public LocalContainerEntityManagerFactoryBean firstEntityManagerFactory(@Qualifier("firstDataSource") DataSource firstDataSource, EntityManagerFactoryBuilder builder) {
         return builder.dataSource(firstDataSource)
                 //Model
-                .packages(DOMAIN_PATH)
+                .packages(MODEL_PATH)
                 .persistenceUnit("one")
                 .build();
     }

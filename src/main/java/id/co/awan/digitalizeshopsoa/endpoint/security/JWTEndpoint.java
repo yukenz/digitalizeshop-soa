@@ -3,7 +3,7 @@ package id.co.awan.digitalizeshopsoa.endpoint.security;
 import https.soa_digitalizeshop_id.ws.jwt.GetJWTB2B2PRequest;
 import https.soa_digitalizeshop_id.ws.jwt.GetJWTB2BRequest;
 import https.soa_digitalizeshop_id.ws.jwt.GetJWTResponse;
-import id.co.awan.digitalizeshopsoa.database.first.repo.SellerFirstRepo;
+import id.co.awan.digitalizeshopsoa.database.first.repo.SellerModelRepo;
 import id.co.awan.digitalizeshopsoa.exception.UnauthorizedSoapException;
 import id.co.awan.digitalizeshopsoa.service.JWTService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class JWTEndpoint {
 
     // CDI
     private final JWTService jwtService;
-    private final SellerFirstRepo sellerFirstRepo;
+    private final SellerModelRepo sellerModelRepo;
 
 
     // JWT B2B
@@ -73,7 +73,7 @@ public class JWTEndpoint {
         String password = request.getPassword();
 
         // Validate Seller Credential
-        if (!sellerFirstRepo.authSeller(username, password)) {
+        if (!sellerModelRepo.authSeller(username, password)) {
             throw new UnauthorizedSoapException("Invalid Seller Credential");
         }
 
