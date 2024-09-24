@@ -7,11 +7,13 @@ import id.co.awan.digitalizeshopsoa.exception.UnauthorizedSoapException;
 import id.co.awan.digitalizeshopsoa.service.ProductService;
 import jakarta.xml.bind.JAXBElement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import javax.wsdl.Message;
 import javax.xml.namespace.QName;
 import java.util.List;
 import java.util.stream.Stream;
@@ -39,6 +41,7 @@ public class ProductEndpoint {
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = LOCAL_PART_CREATE)
     public JAXBElement<ProductEntity> createProductRequest(
+            MessageContext messageContext,
             @RequestPayload JAXBElement< ProductEntity> request
     ) throws UnauthorizedSoapException {
 
@@ -46,7 +49,7 @@ public class ProductEndpoint {
 
         // Create Entity
         ProductModel product = new ProductModel();
-        product.setId(requestObj.getId());
+//        product.setId(requestObj.getId());
         product.setSellerId(requestObj.getSellerId());
         product.setName(requestObj.getName());
         product.setPrice(requestObj.getPrice());
@@ -57,7 +60,10 @@ public class ProductEndpoint {
         product.setAvailable(requestObj.isAvailable());
 
         // Save Entity
-        productService.saveProduct(product);
+        ProductModel savedPrduct = productService.saveProduct(product);
+
+        requestObj.setId(savedPrduct.getId());
+
         return request;
     }
 
@@ -68,6 +74,7 @@ public class ProductEndpoint {
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = LOCAL_PART_READ)
     public JAXBElement<ProductEntity> readProductRequest(
+            MessageContext messageContext,
             @RequestPayload JAXBElement<Integer> request
     ) throws UnauthorizedSoapException {
 
@@ -110,6 +117,7 @@ public class ProductEndpoint {
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = LOCAL_PART_READS)
     public ReadProductsResponse readProductsRequest(
+            MessageContext messageContext,
             @RequestPayload ReadProductsRequest request
     ) throws UnauthorizedSoapException {
 
@@ -142,6 +150,7 @@ public class ProductEndpoint {
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = LOCAL_PART_UPDATE)
     public JAXBElement<ProductEntity> updateProductRequest(
+            MessageContext messageContext,
             @RequestPayload JAXBElement<ProductEntity> request
     ) throws UnauthorizedSoapException {
 
@@ -169,6 +178,7 @@ public class ProductEndpoint {
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = LOCAL_PART_DELETE)
     public JAXBElement<Boolean> deleteProductRequest(
+            MessageContext messageContext,
             @RequestPayload JAXBElement<Integer> request
     ) throws UnauthorizedSoapException {
 

@@ -1,10 +1,6 @@
 package id.co.awan.digitalizeshopsoa.database.first.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -16,6 +12,7 @@ import java.math.BigInteger;
 public class ProductModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "seller_id")

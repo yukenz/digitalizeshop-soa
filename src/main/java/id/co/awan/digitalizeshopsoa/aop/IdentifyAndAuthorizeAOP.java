@@ -28,7 +28,9 @@ public class IdentifyAndAuthorizeAOP {
 
     private final BackendModelRepo backendModelRepo;
 
-    @Around("execution(* id.co.awan.digitalizeshopsoa.example.CountryEndpoint.*(..))")
+    @Around("" +
+            "execution(* id.co.awan.digitalizeshopsoa.example.CountryEndpoint.*(..))" +
+            "|| execution(* id.co.awan.digitalizeshopsoa.endpoint.resource.*.*(..))")
     public Object handlerAOP(ProceedingJoinPoint pjp) throws Throwable {
 
         Object[] args = pjp.getArgs();
