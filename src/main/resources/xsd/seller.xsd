@@ -1,0 +1,58 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="https://soa.digitalizeshop.id/ws/seller"
+           targetNamespace="https://soa.digitalizeshop.id/ws/seller"
+           elementFormDefault="qualified">
+
+
+    <!-- ENTITY -->
+    <xs:complexType name="sellerEntity">
+        <xs:sequence>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="password" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="ownerName" type="xs:string"/>
+            <xs:element name="address1" type="xs:string"/>
+            <xs:element name="address2" type="xs:string"/>
+            <xs:element name="status" type="xs:boolean"/>
+            <xs:element name="imageURI" type="xs:string"/>
+            <xs:element name="registrationDate" type="xs:date"/>
+            <xs:element name="lastLogin" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <!-- CREATE -->
+    <xs:element name="createSellerRequest" type="tns:sellerEntity"/>
+    <xs:element name="createSellerResponse" type="tns:sellerEntity"/>
+
+    <!-- READ SINGLE -->
+    <xs:element name="readSellerRequest" type="xs:string"/>
+    <xs:element name="readSellerResponse" type="tns:sellerEntity"/>
+
+    <!-- READ BATCH -->
+    <xs:element name="readSellersRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="page" type="xs:int"/>
+                <xs:element name="size" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="readSellersResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="response" maxOccurs="unbounded" type="tns:sellerEntity"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <!-- UPDATE -->
+    <xs:element name="updateSellerRequest" type="tns:sellerEntity"/>
+    <xs:element name="updateSellerResponse" type="tns:sellerEntity"/>
+
+    <!-- DELETE -->
+    <xs:element name="deleteSellerRequest" type="xs:string"/>
+    <xs:element name="deleteSellerResponse" type="xs:boolean"/>
+
+</xs:schema>

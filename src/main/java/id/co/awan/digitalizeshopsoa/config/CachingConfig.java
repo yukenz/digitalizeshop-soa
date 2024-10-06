@@ -17,7 +17,7 @@ import java.util.List;
 @EnableCaching
 @EnableScheduling
 @Slf4j
-class CachingConfig {
+public class CachingConfig {
 
     // Cache for BackendEntity
     @Bean
@@ -30,7 +30,7 @@ class CachingConfig {
     // Refresh Cache Every 10 Minutes
     @CacheEvict(allEntries = true, value = {"banckendEntity"})
     @Scheduled(fixedDelay = 10 * 60 * 1000, initialDelay = 500)
-    public void reportCacheEvict() {
+    public void backendEntityCacheEvict() {
         log.info("Flush Cache backendEntity");
     }
 

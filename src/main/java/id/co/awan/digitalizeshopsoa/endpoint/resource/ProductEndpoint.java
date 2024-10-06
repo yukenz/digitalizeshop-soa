@@ -5,6 +5,7 @@ import id.co.awan.digitalizeshopsoa.database.first.model.ProductModel;
 import id.co.awan.digitalizeshopsoa.database.first.repo.ProductModelRepo;
 import id.co.awan.digitalizeshopsoa.exception.UnauthorizedSoapException;
 import id.co.awan.digitalizeshopsoa.service.ProductService;
+import id.co.awan.digitalizeshopsoa.util.MessageContextUtil;
 import jakarta.xml.bind.JAXBElement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ws.context.MessageContext;
@@ -13,7 +14,6 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
-import javax.wsdl.Message;
 import javax.xml.namespace.QName;
 import java.util.List;
 import java.util.stream.Stream;
@@ -46,11 +46,12 @@ public class ProductEndpoint {
     ) throws UnauthorizedSoapException {
 
         ProductEntity requestObj = request.getValue();
+        String sellerId = MessageContextUtil.getPrincipalFromMessageContext(messageContext);
 
         // Create Entity
         ProductModel product = new ProductModel();
 //        product.setId(requestObj.getId());
-        product.setSellerId(requestObj.getSellerId());
+        product.setSeller(sellerId);
         product.setName(requestObj.getName());
         product.setPrice(requestObj.getPrice());
         product.setDescription(requestObj.getDescription());
@@ -97,7 +98,7 @@ public class ProductEndpoint {
 
         // Finalize Response
         response.setId(product.getId());
-        response.setSellerId(product.getSellerId());
+        response.setSeller(product.getSeller());
         response.setName(product.getName());
         response.setPrice(product.getPrice());
         response.setDescription(product.getDescription());
@@ -131,7 +132,7 @@ public class ProductEndpoint {
                 products.map(product -> {
                     ProductEntity productEntity = new ProductEntity();
                     productEntity.setId(product.getId());
-                    productEntity.setSellerId(product.getSellerId());
+                    productEntity.setSeller(product.getSeller());
                     productEntity.setName(product.getName());
                     productEntity.setPrice(product.getPrice());
                     productEntity.setDescription(product.getDescription());
@@ -160,7 +161,7 @@ public class ProductEndpoint {
 
         ProductModel product = productService.getProduct(id);
         product.setId(requestObj.getId());
-        product.setSellerId(requestObj.getSellerId());
+        product.setSeller(requestObj.getSeller());
         product.setName(requestObj.getName());
         product.setPrice(requestObj.getPrice());
         product.setDescription(requestObj.getDescription());

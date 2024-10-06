@@ -6,8 +6,8 @@
     <!-- ENTITY -->
     <xs:complexType name="productEntity">
         <xs:sequence>
-            <xs:element name="id" type="xs:int"/>
-            <xs:element name="sellerId" type="xs:string"/>
+            <xs:element name="id" type="xs:int" minOccurs="0"/>
+            <xs:element name="seller" type="xs:string" minOccurs="0"/>
             <xs:element name="name" type="xs:string"/>
             <xs:element name="price" type="xs:integer"/>
             <xs:element name="description" type="xs:string"/>

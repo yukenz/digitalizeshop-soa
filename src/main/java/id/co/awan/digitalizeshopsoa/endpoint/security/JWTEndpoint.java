@@ -40,8 +40,7 @@ public class JWTEndpoint {
     @ResponsePayload
     public GetJWTResponse getJWTB2BRequest(
             @RequestPayload GetJWTB2BRequest request
-    )
-            throws UnauthorizedSoapException {
+    ) throws UnauthorizedSoapException {
 
         // Generate B2B Token
         String accessToken = jwtService.generateB2BToken(

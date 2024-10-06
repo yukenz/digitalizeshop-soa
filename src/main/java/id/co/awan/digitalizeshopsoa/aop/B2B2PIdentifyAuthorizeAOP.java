@@ -49,7 +49,7 @@ public class B2B2PIdentifyAuthorizeAOP {
         // Validate B2B
         String b2bId;
         try {
-            String b2bAccessToken = MessageContextUtil.getBearerToken("Authorization", messageContext);
+            String b2bAccessToken = MessageContextUtil.getAccessTokenFromBearerHeader("Authorization", messageContext);
             Jws<Claims> claimsJws = jwtService.parseJWSWithPublicKey(b2bAccessToken);
             Claims payload = claimsJws.getPayload();
             b2bId = (String) payload.get(B2B_ID);

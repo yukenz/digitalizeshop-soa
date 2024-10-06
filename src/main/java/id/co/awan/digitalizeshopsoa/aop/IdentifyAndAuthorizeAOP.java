@@ -28,6 +28,11 @@ public class IdentifyAndAuthorizeAOP {
 
     private final BackendModelRepo backendModelRepo;
 
+    /**
+     * Processing all request from {@link id.co.awan.digitalizeshopsoa.endpoint.resource}
+     * with {@link MessageContext} parameter
+     * @throws Throwable Any Exception
+     */
     @Around("" +
             "execution(* id.co.awan.digitalizeshopsoa.example.CountryEndpoint.*(..))" +
             "|| execution(* id.co.awan.digitalizeshopsoa.endpoint.resource.*.*(..))")
@@ -42,7 +47,7 @@ public class IdentifyAndAuthorizeAOP {
                 // Validate B2B
                 String b2bId;
                 try {
-                    String accessToken_B2B = MessageContextUtil.getBearerToken("Authorization", messageContext);
+                    String accessToken_B2B = MessageContextUtil.getAccessTokenFromBearerHeader("Authorization", messageContext);
                     Jws<Claims> claimsJws = jwtService.parseJWSWithPublicKey(accessToken_B2B);
                     b2bId = (String) claimsJws.getPayload().get(B2B_ID);
                     messageContext.setProperty(B2B_ID, b2bId);
@@ -53,9 +58,10 @@ public class IdentifyAndAuthorizeAOP {
 
                 // Validate B2B2P
                 try {
-                    String accessToken_B2B2P = MessageContextUtil.getBearerToken("Partner-Authorization", messageContext);
+                    String accessToken_B2B2P = MessageContextUtil.getAccessTokenFromBearerHeader("Partner-Authorization", messageContext);
 
-                    BackendModel backendModel = backendModelRepo.findById(b2bId).orElseThrow(() -> new UnauthorizedSoapException("Unauthorized B2B Credential"));
+                    BackendModel backendModel = backendModelRepo.findById(b2bId)
+                            .orElseThrow(() -> new UnauthorizedSoapException("Unauthorized B2B Credential"));
                     String backendSecret = backendModel.getSecret();
 
                     Jws<Claims> jwsB2B2P = jwtService.parseJWSWithSecrekKey(accessToken_B2B2P, backendSecret);

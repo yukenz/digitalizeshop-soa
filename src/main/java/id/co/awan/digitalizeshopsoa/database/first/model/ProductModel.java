@@ -15,8 +15,7 @@ public class ProductModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "seller_id")
-    private String sellerId;
+    private String seller;
     private String name;
     private BigInteger price;
     private String description;
@@ -25,5 +24,7 @@ public class ProductModel {
     private BigDecimal discount;
     private String category;
     private boolean isAvailable;
+
+
 
 }

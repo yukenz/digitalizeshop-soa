@@ -1,5 +1,9 @@
 package id.co.awan.digitalizeshopsoa.exception;
 
+/**
+ * Exception for Unauthorized SOAP Request
+ * Only use for SOAP WS
+ */
 public class UnauthorizedSoapException extends RuntimeException {
     public UnauthorizedSoapException(String message) {
         super("[" + UnauthorizedSoapException.class.getName() + "] " + message);

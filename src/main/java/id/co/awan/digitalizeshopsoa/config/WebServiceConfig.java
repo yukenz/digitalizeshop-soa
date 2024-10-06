@@ -1,6 +1,7 @@
 package id.co.awan.digitalizeshopsoa.config;
 
 import id.co.awan.digitalizeshopsoa.endpoint.resource.ProductEndpoint;
+import id.co.awan.digitalizeshopsoa.endpoint.resource.SellerEndpoint;
 import id.co.awan.digitalizeshopsoa.endpoint.security.JWTEndpoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -23,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebServiceConfig extends WsConfigurerAdapter {
 
+    private final String LOCATION_URI = "/ws";
 
     // Schema Section
     @Bean
@@ -37,7 +39,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema countriesSchema) {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
         wsdl11Definition.setPortTypeName("CountriesPort");
-        wsdl11Definition.setLocationUri("/ws");
+        wsdl11Definition.setLocationUri(LOCATION_URI);
         wsdl11Definition.setTargetNamespace("http://spring.io/guides/gs-producing-web-service");
         wsdl11Definition.setSchema(countriesSchema);
         return wsdl11Definition;
@@ -47,19 +49,29 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     public DefaultWsdl11Definition getJWTWsdl11Definition(XsdSchema jwtSchema) {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
         wsdl11Definition.setPortTypeName(JWTEndpoint.PORT);
-        wsdl11Definition.setLocationUri("/ws");
+        wsdl11Definition.setLocationUri(LOCATION_URI);
         wsdl11Definition.setTargetNamespace(JWTEndpoint.NAMESPACE_URI);
         wsdl11Definition.setSchema(jwtSchema);
         return wsdl11Definition;
     }
 
     @Bean(name = "product")
-    public DefaultWsdl11Definition menuWsdl11Definition(XsdSchema productSchema) {
+    public DefaultWsdl11Definition productWsdl11Definition(XsdSchema productSchema) {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
         wsdl11Definition.setPortTypeName(ProductEndpoint.PORT);
-        wsdl11Definition.setLocationUri("/ws");
+        wsdl11Definition.setLocationUri(LOCATION_URI);
         wsdl11Definition.setTargetNamespace(ProductEndpoint.NAMESPACE_URI);
         wsdl11Definition.setSchema(productSchema);
+        return wsdl11Definition;
+    }
+
+    @Bean(name = "seller")
+    public DefaultWsdl11Definition sellerWsdl11Definition(XsdSchema sellerSchema) {
+        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
+        wsdl11Definition.setPortTypeName(SellerEndpoint.PORT);
+        wsdl11Definition.setLocationUri(LOCATION_URI);
+        wsdl11Definition.setTargetNamespace(SellerEndpoint.NAMESPACE_URI);
+        wsdl11Definition.setSchema(sellerSchema);
         return wsdl11Definition;
     }
 
@@ -76,6 +88,11 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     @Bean
     public XsdSchema productSchema() {
         return new SimpleXsdSchema(new ClassPathResource("xsd/product.xsd"));
+    }
+
+    @Bean
+    public XsdSchema sellerSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("xsd/seller.xsd"));
     }
 
 
