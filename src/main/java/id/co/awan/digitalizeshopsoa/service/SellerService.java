@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Stream;
 
@@ -15,6 +16,7 @@ public class SellerService {
 
     private final SellerModelRepo sellerModelRepo;
 
+    @Transactional(transactionManager = "firstTransactionManager")
     public SellerModel saveSeller(SellerModel productModel) {
         return sellerModelRepo.save(productModel);
     }
@@ -33,6 +35,7 @@ public class SellerService {
 
     }
 
+    @Transactional(transactionManager = "firstTransactionManager")
     public void deleteSeller(String username) {
         sellerModelRepo.deleteById(username);
     }

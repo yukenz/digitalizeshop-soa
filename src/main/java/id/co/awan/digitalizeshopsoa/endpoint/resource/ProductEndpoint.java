@@ -1,6 +1,8 @@
 package id.co.awan.digitalizeshopsoa.endpoint.resource;
 
-import https.soa_digitalizeshop_id.ws.product.*;
+import https.soa_digitalizeshop_id.ws.product.ProductEntity;
+import https.soa_digitalizeshop_id.ws.product.ReadProductsRequest;
+import https.soa_digitalizeshop_id.ws.product.ReadProductsResponse;
 import id.co.awan.digitalizeshopsoa.database.first.model.ProductModel;
 import id.co.awan.digitalizeshopsoa.database.first.repo.ProductModelRepo;
 import id.co.awan.digitalizeshopsoa.exception.UnauthorizedSoapException;
@@ -15,7 +17,6 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import javax.xml.namespace.QName;
-import java.util.List;
 import java.util.stream.Stream;
 
 @Endpoint
@@ -42,16 +43,17 @@ public class ProductEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = LOCAL_PART_CREATE)
     public JAXBElement<ProductEntity> createProductRequest(
             MessageContext messageContext,
-            @RequestPayload JAXBElement< ProductEntity> request
+            @RequestPayload JAXBElement<ProductEntity> request
     ) throws UnauthorizedSoapException {
 
         ProductEntity requestObj = request.getValue();
-        String sellerId = MessageContextUtil.getPrincipalFromMessageContext(messageContext);
+        String sellerUsername = MessageContextUtil.getPrincipalFromMessageContext(messageContext);
+        requestObj.setSeller(sellerUsername);
 
         // Create Entity
         ProductModel product = new ProductModel();
 //        product.setId(requestObj.getId());
-        product.setSeller(sellerId);
+        product.setSeller(requestObj.getSeller());
         product.setName(requestObj.getName());
         product.setPrice(requestObj.getPrice());
         product.setDescription(requestObj.getDescription());
@@ -80,11 +82,9 @@ public class ProductEndpoint {
     ) throws UnauthorizedSoapException {
 
 
+        String sellerUsername = MessageContextUtil.getPrincipalFromMessageContext(messageContext);
         Integer id = request.getValue();
-        ProductModel product = productService.getProduct(id);
-
-        List<ProductModel> all = productModelRepo.findAll();
-
+        ProductModel product = productService.getSellerProduct(id, sellerUsername);
 
         // Finalize Response
         ProductEntity response = new ProductEntity();
@@ -123,9 +123,10 @@ public class ProductEndpoint {
     ) throws UnauthorizedSoapException {
 
 
+        String sellerUsername = MessageContextUtil.getPrincipalFromMessageContext(messageContext);
         int page = request.getPage();
         int size = request.getSize();
-        Stream<ProductModel> products = productService.getProducts(page, size);
+        Stream<ProductModel> products = productService.getSellerProducts(page, size, sellerUsername);
 
         ReadProductsResponse response = new ReadProductsResponse();
         response.getResponse().addAll(
@@ -157,11 +158,14 @@ public class ProductEndpoint {
 
 
         ProductEntity requestObj = request.getValue();
+        String sellerUsername = MessageContextUtil.getPrincipalFromMessageContext(messageContext);
+        requestObj.setSeller(sellerUsername);
+
         int id = requestObj.getId();
 
-        ProductModel product = productService.getProduct(id);
+        ProductModel product = productService.getSellerProduct(id, sellerUsername);
         product.setId(requestObj.getId());
-        product.setSeller(requestObj.getSeller());
+        // product.setSeller(requestObj.getSeller()); Seller is not updatable
         product.setName(requestObj.getName());
         product.setPrice(requestObj.getPrice());
         product.setDescription(requestObj.getDescription());
@@ -183,7 +187,9 @@ public class ProductEndpoint {
             @RequestPayload JAXBElement<Integer> request
     ) throws UnauthorizedSoapException {
 
-        productService.deleteProduct(request.getValue());
+        String sellerUsername = MessageContextUtil.getPrincipalFromMessageContext(messageContext);
+
+        productService.deleteSellerProduct(request.getValue(), sellerUsername);
         return new JAXBElement<>(
                 new QName(NAMESPACE_URI, "deleteProductResponse", "prod"),
                 Boolean.class,
